@@ -1,10 +1,10 @@
-import os,pytube
+import os,pytube,time
+from prog import double_bar_example
 
 link=input("Enter full Youtube link to video \n")
 yt=pytube.YouTube(str(link)) # create object
 # obtain streams which are progressive and of extension mp4
 st=yt.streams.filter(progressive=True,file_extension='mp4').all()
-#vid.extension,vid.resolution
 print('Available files on the url in mp4 format')
 s=1
 for i in st:
@@ -16,10 +16,18 @@ st=st[int(res)-1] # chose the desired resolution video
 
 try:
     #downloading the video
-    st.download(os.path.dirname(os.path.abspath(__file__))) # download to the following path
+    print('Initializing')
+    double_bar_example()
+    print('Downloading...')
+
+    start_time=time.time()
+    st.download(os.path.dirname(os.path.abspath(__file__)))# download to the following path
+    duration=time.time()-start_time
+
+    print('Download Completed in'+duration+'seconds\n' + yt.title + ' has been downloaded\n')
 except:
     print("Some Error!")
-print('Task Completed! \n'+yt.title+' has been downloaded\n')
+
 print('View thumbnail at '+yt.thumbnail_url)
 # to view captions,
 #print(  yt.captions.all() )
